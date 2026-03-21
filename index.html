@@ -1,1000 +1,252 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="page-title">Your Name | Your Title</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  /* ══════════════════════════════════
-     DESIGN TOKENS — edit these freely
-  ══════════════════════════════════ */
-  :root {
-    --accent:       #C9A96E;       /* gold accent */
-    --accent-dark:  #8B6B3D;
-    --bg:           #0E0E0E;       /* page background */
-    --card:         #161616;       /* card background */
-    --surface:      #1E1E1E;       /* input / button surface */
-    --text:         #F0EDE8;       /* main text */
-    --muted:        #8A8680;       /* secondary text */
-    --border:       #2A2A2A;       /* dividers */
-    --radius:       18px;
-    --font-display: 'Cormorant Garamond', Georgia, serif;
-    --font-body:    'DM Sans', sans-serif;
-  }
+    <!DOCTYPE html>
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0 0 60px;
-  }
-
-  /* ── Card wrapper ── */
-  .card {
-    width: 100%;
-    max-width: 480px;
-    background: var(--card);
-    border-radius: 0 0 var(--radius) var(--radius);
-    overflow: hidden;
-    box-shadow: 0 30px 80px rgba(0,0,0,.6);
-    animation: fadeUp .7s ease both;
-  }
-  @keyframes fadeUp {
-    from { opacity:0; transform:translateY(24px); }
-    to   { opacity:1; transform:translateY(0);    }
-  }
-
-  /* ── Cover ── */
-  .cover {
-    position: relative;
-    height: 180px;
-    background: linear-gradient(135deg, #1a1208 0%, #3a2a10 50%, #1a1208 100%);
-    overflow: hidden;
-  }
-  .cover img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    opacity: .85;
-    transition: opacity .3s;
-  }
-  .cover-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to bottom, transparent 40%, rgba(22,22,22,.95));
-  }
-
-  /* ── Avatar ── */
-  .avatar-wrap {
-    position: relative;
-    width: 96px; height: 96px;
-    margin: -48px auto 0;
-    z-index: 2;
-  }
-  .avatar-wrap img {
-    width: 100%; height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid var(--accent);
-    background: var(--surface);
-    display: block;
-  }
-  .avatar-badge {
-    position: absolute;
-    bottom: 2px; right: 2px;
-    width: 20px; height: 20px;
-    background: var(--accent);
-    border-radius: 50%;
-    border: 2px solid var(--card);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .avatar-badge svg { width:10px; height:10px; fill:#0E0E0E; }
-
-  /* ── Identity ── */
-  .identity {
-    text-align: center;
-    padding: 14px 24px 24px;
-  }
-  .identity h1 {
-    font-family: var(--font-display);
-    font-size: 2rem;
-    font-weight: 500;
-    letter-spacing: .02em;
-    color: var(--text);
-    line-height: 1.1;
-  }
-  .identity .title {
-    font-size: .82rem;
-    color: var(--accent);
-    font-weight: 500;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-    margin-top: 6px;
-  }
-  .identity .company {
-    font-size: .82rem;
-    color: var(--muted);
-    margin-top: 3px;
-  }
-  .identity .bio {
-    font-size: .84rem;
-    color: var(--muted);
-    margin-top: 12px;
-    line-height: 1.6;
-    max-width: 300px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  /* ── Action buttons ── */
-  .actions {
-    display: flex;
-    gap: 10px;
-    padding: 0 24px 24px;
-    justify-content: center;
-  }
-  .btn {
-    flex: 1;
-    max-width: 180px;
-    padding: 11px 18px;
-    border-radius: 50px;
-    font-family: var(--font-body);
-    font-size: .82rem;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    letter-spacing: .06em;
-    transition: all .2s;
-  }
-  .btn-primary {
-    background: var(--accent);
-    color: #0E0E0E;
-  }
-  .btn-primary:hover { background: var(--accent-dark); color: var(--text); }
-  .btn-outline {
-    background: transparent;
-    color: var(--text);
-    border: 1px solid var(--border);
-  }
-  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* ── Contact info strip ── */
-  .contact-strip {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    margin: 0 24px 24px;
-    border-radius: 12px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-  }
-  .contact-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 13px 16px;
-    background: var(--surface);
-    color: var(--text);
-    text-decoration: none;
-    font-size: .84rem;
-    transition: background .2s;
-  }
-  .contact-row:hover { background: #252525; }
-  .contact-row .icon {
-    width: 34px; height: 34px;
-    border-radius: 8px;
-    background: var(--border);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .contact-row .icon svg { width:16px; height:16px; }
-  .contact-row .label { color: var(--muted); font-size: .72rem; display: block; }
-  .contact-row .value { font-size: .84rem; }
-
-  /* ── Divider ── */
-  .section-label {
-    text-align: center;
-    font-size: .7rem;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 0 24px 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .section-label::before, .section-label::after {
-    content:''; flex:1; height:1px; background: var(--border);
-  }
-
-  /* ── Social links grid ── */
-  .links-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 10px;
-    padding: 0 24px 28px;
-  }
-  .link-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 7px;
-    padding: 14px 8px;
-    border-radius: 14px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    text-decoration: none;
-    color: var(--text);
-    font-size: .72rem;
-    font-weight: 500;
-    letter-spacing: .04em;
-    transition: all .2s;
-    animation: fadeUp .6s ease both;
-    cursor: pointer;
-  }
-  .link-item:hover {
-    border-color: var(--accent);
-    background: #1f1c18;
-    transform: translateY(-2px);
-  }
-  .link-icon {
-    width: 40px; height: 40px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.3rem;
-  }
-
-  /* ── Modal ── */
-  .modal-backdrop {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.75);
-    z-index: 100;
-    align-items: flex-end;
-    justify-content: center;
-    padding: 0;
-    backdrop-filter: blur(6px);
-  }
-  .modal-backdrop.open { display: flex; animation: bdIn .25s ease; }
-  @keyframes bdIn { from{opacity:0} to{opacity:1} }
-
-  .modal {
-    width: 100%;
-    max-width: 480px;
-    background: var(--card);
-    border-radius: var(--radius) var(--radius) 0 0;
-    padding: 28px 24px 40px;
-    animation: slideUp .3s ease;
-  }
-  @keyframes slideUp {
-    from{transform:translateY(40px)} to{transform:translateY(0)}
-  }
-  .modal h3 {
-    font-family: var(--font-display);
-    font-size: 1.4rem;
-    margin-bottom: 4px;
-  }
-  .modal p { font-size: .82rem; color: var(--muted); margin-bottom: 18px; }
-  .modal input, .modal textarea {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 14px;
-    color: var(--text);
-    font-family: var(--font-body);
-    font-size: .85rem;
-    outline: none;
-    transition: border-color .2s;
-    margin-bottom: 10px;
-    resize: none;
-  }
-  .modal input:focus, .modal textarea:focus { border-color: var(--accent); }
-  .modal-actions { display: flex; gap: 10px; margin-top: 4px; }
-  .modal-close-btn {
-    position: absolute; /* not used */
-  }
-
-  /* ── Share modal ── */
-  .share-options {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  .share-opt {
-    display: flex; flex-direction: column; align-items: center; gap: 6px;
-    padding: 14px 8px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: .72rem;
-    color: var(--text);
-    transition: all .2s;
-    text-decoration: none;
-  }
-  .share-opt:hover { border-color: var(--accent); }
-  .share-opt span { font-size: 1.4rem; }
-  .url-copy {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 14px;
-  }
-  .url-copy input {
-    flex:1; background:none; border:none; color:var(--muted);
-    font-size:.78rem; outline:none; font-family:var(--font-body);
-    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    margin-bottom:0;
-  }
-  .copy-btn {
-    background: var(--accent); color:#0E0E0E;
-    border:none; border-radius:7px; padding:6px 12px;
-    font-size:.75rem; font-weight:600; cursor:pointer;
-    white-space:nowrap; font-family:var(--font-body);
-    transition: background .2s;
-  }
-  .copy-btn:hover { background: var(--accent-dark); }
-
-  /* ── Edit Panel ── */
-  #edit-panel {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,.85);
-    z-index: 200;
-    overflow-y: auto;
-    padding: 20px;
-    backdrop-filter: blur(10px);
-  }
-  #edit-panel.open { display: block; }
-  .edit-inner {
-    background: var(--card);
-    border-radius: var(--radius);
-    max-width: 480px;
-    margin: 0 auto;
-    padding: 28px 24px 40px;
-  }
-  .edit-inner h2 {
-    font-family: var(--font-display);
-    font-size: 1.8rem;
-    margin-bottom: 4px;
-  }
-  .edit-inner > p { font-size:.82rem; color:var(--muted); margin-bottom:24px; }
-  .edit-group { margin-bottom: 20px; }
-  .edit-group label {
-    display: block;
-    font-size: .72rem;
-    letter-spacing: .1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 7px;
-  }
-  .edit-group input, .edit-group textarea, .edit-group select {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 11px 14px;
-    color: var(--text);
-    font-family: var(--font-body);
-    font-size: .85rem;
-    outline: none;
-    transition: border-color .2s;
-    resize: none;
-  }
-  .edit-group input:focus, .edit-group textarea:focus { border-color: var(--accent); }
-  .edit-section-title {
-    font-size: .72rem;
-    letter-spacing: .14em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin: 28px 0 16px;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  /* link editor rows */
-  .link-editor-row {
-    display: flex; gap: 8px; margin-bottom: 10px; align-items: center;
-  }
-  .link-editor-row input { flex:1; margin:0; }
-  .link-editor-row select { width:130px; flex-shrink:0; margin:0; }
-  .del-link-btn {
-    width:34px; height:34px; border-radius:8px;
-    background:transparent; border:1px solid var(--border);
-    color:var(--muted); cursor:pointer; font-size:1rem;
-    display:flex;align-items:center;justify-content:center;
-    transition:all .2s; flex-shrink:0;
-  }
-  .del-link-btn:hover { border-color:#e05252; color:#e05252; }
-  .add-link-btn {
-    width:100%; padding:10px; border-radius:10px;
-    background:transparent; border:1px dashed var(--border);
-    color:var(--muted); cursor:pointer; font-size:.82rem;
-    font-family:var(--font-body); transition:all .2s; margin-top:4px;
-  }
-  .add-link-btn:hover { border-color:var(--accent); color:var(--accent); }
-
-  /* color picker row */
-  .color-row { display:flex; gap:10px; align-items:center; }
-  .color-row input[type=color] {
-    width:44px; height:44px; padding:2px; border-radius:8px;
-    cursor:pointer; flex-shrink:0;
-  }
-  .color-row input[type=text] { flex:1; }
-
-  /* image upload */
-  .img-upload-label {
-    display:flex; align-items:center; gap:12px;
-    padding:12px 14px;
-    background:var(--surface); border:1px dashed var(--border);
-    border-radius:10px; cursor:pointer; transition:border-color .2s;
-    font-size:.82rem; color:var(--muted);
-  }
-  .img-upload-label:hover { border-color:var(--accent); color:var(--accent); }
-  .img-upload-label input[type=file] { display:none; }
-  .img-preview { width:48px; height:48px; border-radius:8px; object-fit:cover; background:var(--border); }
-
-  .edit-save-btn {
-    width:100%; padding:14px; margin-top:24px;
-    background:var(--accent); color:#0E0E0E;
-    border:none; border-radius:50px; font-family:var(--font-body);
-    font-size:.9rem; font-weight:600; letter-spacing:.06em;
-    cursor:pointer; transition:background .2s;
-  }
-  .edit-save-btn:hover { background:var(--accent-dark); color:var(--text); }
-  .edit-close-btn {
-    position:fixed; top:20px; right:20px;
-    width:38px; height:38px; border-radius:50%;
-    background:var(--surface); border:1px solid var(--border);
-    color:var(--text); cursor:pointer; font-size:1.1rem;
-    display:flex;align-items:center;justify-content:center;
-    z-index:210; transition:all .2s;
-  }
-  .edit-close-btn:hover { border-color:var(--accent); color:var(--accent); }
-
-  /* ── Edit FAB ── */
-  #edit-fab {
-    position: fixed;
-    bottom: 24px; right: 24px;
-    width: 52px; height: 52px;
-    background: var(--accent);
-    color: #0E0E0E;
-    border: none; border-radius: 50%;
-    font-size: 1.2rem; cursor: pointer;
-    box-shadow: 0 8px 24px rgba(201,169,110,.35);
-    display: flex; align-items: center; justify-content: center;
-    z-index: 50; transition: transform .2s, box-shadow .2s;
-  }
-  #edit-fab:hover { transform:scale(1.08); box-shadow:0 12px 32px rgba(201,169,110,.5); }
-
-  /* ── Notification toast ── */
-  #toast {
-    position:fixed; bottom:90px; left:50%; transform:translateX(-50%) translateY(20px);
-    background:var(--surface); border:1px solid var(--border);
-    color:var(--text); padding:10px 20px; border-radius:50px;
-    font-size:.82rem; opacity:0; transition:all .3s; z-index:300;
-    white-space:nowrap;
-  }
-  #toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
-
-  @media(max-width:480px){
-    body { padding-bottom: 80px; }
-    .links-grid { grid-template-columns: repeat(3,1fr); }
-  }
-</style>
-</head>
-<body>
-
-<!-- ════════════════════════════════
-     PROFILE CARD
-═════════════════════════════════ -->
-<div class="card">
-
-  <!-- Cover -->
-  <div class="cover" id="cover-wrap">
-    <img id="cover-img" src="" alt="Cover" onerror="this.style.display='none'" style="display:none">
-    <div class="cover-overlay"></div>
-  </div>
-
-  <!-- Avatar -->
-  <div class="avatar-wrap">
-    <img id="avatar-img" src="" alt="Profile"
-      onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 96 96%22><rect width=%2296%22 height=%2296%22 fill=%22%231E1E1E%22/><text x=%2248%22 y=%2256%22 text-anchor=%22middle%22 font-size=%2240%22 fill=%22%23C9A96E%22>✦</text></svg>'">
-    <div class="avatar-badge">
-      <svg viewBox="0 0 10 10"><path d="M5 1l1.2 2.5L9 4.1 7 6l.5 2.9L5 7.5 2.5 8.9 3 6 1 4.1l2.8-.6z"/></svg>
+    <html class="light" lang="en"><head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Mansour Khalifa | Digital Curator</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            "tertiary": "#3a3c3c",
+                            "error": "#ba1a1a",
+                            "surface-container-lowest": "#ffffff",
+                            "on-primary-container": "#ffffff",
+                            "secondary-fixed": "#c7c6c6",
+                            "surface-tint": "#5e5e5e",
+                            "inverse-surface": "#2f3131",
+                            "background": "#f9f9f9",
+                            "secondary-container": "#d5d4d4",
+                            "surface-container-low": "#f3f3f3",
+                            "primary-fixed": "#5e5e5e",
+                            "surface-bright": "#f9f9f9",
+                            "on-tertiary": "#e2e2e2",
+                            "on-surface": "#1a1c1c",
+                            "surface-container": "#eeeeee",
+                            "on-secondary-container": "#1b1c1c",
+                            "surface-dim": "#dadada",
+                            "error-container": "#ffdad6",
+                            "on-error": "#ffffff",
+                            "surface-container-high": "#e8e8e8",
+                            "surface": "#f9f9f9",
+                            "inverse-on-surface": "#f1f1f1",
+                            "on-background": "#1a1c1c",
+                            "on-tertiary-container": "#ffffff",
+                            "on-primary-fixed": "#ffffff",
+                            "tertiary-fixed": "#5d5f5f",
+                            "surface-variant": "#e2e2e2",
+                            "outline": "#777777",
+                            "on-surface-variant": "#474747",
+                            "on-secondary-fixed-variant": "#3b3b3c",
+                            "surface-container-highest": "#e2e2e2",
+                            "on-primary": "#e2e2e2",
+                            "primary": "#000000",
+                            "tertiary-fixed-dim": "#454747",
+                            "tertiary-container": "#737575",
+                            "on-primary-fixed-variant": "#e2e2e2",
+                            "on-tertiary-fixed": "#ffffff",
+                            "on-secondary-fixed": "#1b1c1c",
+                            "outline-variant": "#c6c6c6",
+                            "secondary": "#5e5e5e",
+                            "primary-container": "#3b3b3b",
+                            "inverse-primary": "#c6c6c6",
+                            "on-secondary": "#ffffff",
+                            "primary-fixed-dim": "#474747",
+                            "on-tertiary-fixed-variant": "#e2e2e2",
+                            "secondary-fixed-dim": "#acabab",
+                            "on-error-container": "#410002"
+                        },
+                        fontFamily: {
+                            "headline": ["Manrope"],
+                            "body": ["Inter"],
+                            "label": ["Inter"]
+                        },
+                        borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+                    },
+                },
+            }
+        </script>
+    <style>
+            .material-symbols-outlined {
+                font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            }
+            body {
+                background-color: #f9f9f9;
+            }
+        </style>
+    <style>
+        body {
+        min-height: max(884px, 100dvh);
+        }
+    </style>
+    <style>
+        .brand-whatsapp { color: #25D366; }
+        .brand-facebook { color: #1877F2; }
+        .brand-tiktok { color: #000000; }
+        .brand-messenger { color: #0084FF; }
+        .brand-gmail { color: #EA4335; }
+        .brand-instapay { color: #6366f1; }
+        #qr-modal.hidden { display: none; }
+    </style></head>
+    <body class="font-body text-on-surface">
+    <!-- Top Navigation Bar -->
+    <nav class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-lg">
+    <div class="flex justify-between items-center px-6 py-4 w-full max-w-screen-xl mx-auto">
+    <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-zinc-900" data-icon="menu">menu</span>
     </div>
-  </div>
-
-  <!-- Identity -->
-  <div class="identity">
-    <h1 id="disp-name">Your Name</h1>
-    <div class="title" id="disp-title">Your Title</div>
-    <div class="company" id="disp-company">Your Company</div>
-    <div class="bio" id="disp-bio">A short bio or tagline about yourself goes here.</div>
-  </div>
-
-  <!-- Action buttons -->
-  <div class="actions">
-    <button class="btn btn-primary" onclick="openExchange()">Exchange Contact</button>
-    <button class="btn btn-outline" onclick="openShare()">Share Profile</button>
-  </div>
-
-  <!-- Contact info -->
-  <div class="contact-strip" id="contact-strip"></div>
-
-  <!-- Social links -->
-  <div class="section-label">Links</div>
-  <div class="links-grid" id="links-grid"></div>
-
-</div>
-
-<!-- Edit FAB -->
-<button id="edit-fab" onclick="openEdit()" title="Edit Profile">✏️</button>
-
-<!-- Toast -->
-<div id="toast"></div>
-
-
-<!-- ════════════════════════════════
-     EXCHANGE MODAL
-═════════════════════════════════ -->
-<div class="modal-backdrop" id="exchange-modal" onclick="closeModal('exchange-modal')">
-  <div class="modal" onclick="event.stopPropagation()">
-    <h3>Exchange Contact</h3>
-    <p id="exchange-sub">Share your info with the profile owner</p>
-    <input type="text" id="ex-name" placeholder="Full name *">
-    <input type="tel" id="ex-phone" placeholder="Mobile number *">
-    <input type="email" id="ex-email" placeholder="Email *">
-    <input type="text" id="ex-company" placeholder="Company">
-    <textarea id="ex-msg" rows="3" placeholder="Message"></textarea>
-    <div class="modal-actions">
-      <button class="btn btn-primary" style="max-width:100%;flex:1" onclick="sendExchange()">Send</button>
-      <button class="btn btn-outline" onclick="closeModal('exchange-modal')">Cancel</button>
+    <div class="font-['Manrope'] font-black uppercase tracking-widest text-zinc-900">
+                    The Curator
+                </div>
+    <div class="text-zinc-500 font-bold hover:opacity-70 transition-opacity cursor-pointer">
+                    Exchange
+                </div>
     </div>
-  </div>
-</div>
-
-
-<!-- ════════════════════════════════
-     SHARE MODAL
-═════════════════════════════════ -->
-<div class="modal-backdrop" id="share-modal" onclick="closeModal('share-modal')">
-  <div class="modal" onclick="event.stopPropagation()">
-    <h3>Share Profile</h3>
-    <p>Share your digital ID with the world</p>
-    <div class="share-options">
-      <a class="share-opt" id="sh-whatsapp" target="_blank"><span>💬</span>WhatsApp</a>
-      <a class="share-opt" id="sh-facebook" target="_blank"><span>📘</span>Facebook</a>
-      <a class="share-opt" id="sh-twitter" target="_blank"><span>🐦</span>Twitter</a>
-      <a class="share-opt" id="sh-linkedin" target="_blank"><span>💼</span>LinkedIn</a>
-      <a class="share-opt" id="sh-email" target="_blank"><span>✉️</span>Email</a>
-      <a class="share-opt" onclick="nativeShare()"><span>↗️</span>More</a>
+    </nav>
+    <main class="min-h-screen pb-32">
+    <!-- Hero Header Banner -->
+    <header class="relative w-full h-64 bg-primary overflow-hidden">
+    <div class="absolute inset-0 opacity-40 bg-gradient-to-br from-zinc-800 to-black"></div>
+    <div class="absolute inset-0 flex items-center justify-center">
+    <div class="w-full h-full opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-zinc-200 via-transparent to-transparent"></div>
     </div>
-    <div class="url-copy">
-      <input type="text" id="profile-url" readonly value="">
-      <button class="copy-btn" onclick="copyUrl()">Copy</button>
+    <img alt="" class="w-full h-full object-cover" data-alt="Abstract dark minimalist geometric background pattern" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQBQj2dCyyGSE6YvEMyxvrome9uwj1dN1s8KqUnzAyT7iN7cIMoUh7C7-t_BGvA_3wsGiD_rVgZxsP9RZugN2W0vbDHCDpBnrY5QltKM9T0wnjCLy8IbpdKEDu6O6w2HyRm7fm3OpCYtQl1jw1lxwua_ofcnx88dVR5xjoPJJnra68nUm0o31PKzUG-27epKEDQZklqX1QuVC71mo-mfpEiImlVY0RV18A_ERQJjV3djtc3UFxOaE34g0uLpsN_y6gJOTxEpMOxg4"/>
+    </header>
+    <!-- Profile Section -->
+    <div class="max-w-md mx-auto px-6 -mt-20 relative z-10 text-center">
+    <!-- Overlap Avatar -->
+    <div class="relative inline-block mb-6">
+    <div class="w-36 h-36 rounded-full border-4 border-surface overflow-hidden shadow-lg bg-white">
+    <img alt="" class="w-full h-full object-cover" data-alt="Professional portrait of Mansour Khalifa wearing a dark suit" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBn88Mxn6poSLok2kQFSRh32E4X5abiwd7X6R903eE-DF-Dim571Qqu6IrFJ8Nf_Y01L8xHZ6-I7oUxxY56SI7q-ZPeDlxPRW9av-cnobcd0bOXDqIgoXUd2crNmJHnZpUMHBP8WkzRayW7mmRbgFzSFRiAbtLYk6Qcn7ms0-RyE6HfXnclyxL8J2-Xh0-L1aQQcNdedlfSC5hGQ68uxfQujdfyVmXovFmt5j3jsd2l2Fl8uS0Qdk0QzOht4CNj0E8tZctjWtkLLOA"/>
     </div>
-  </div>
-</div>
-
-
-<!-- ════════════════════════════════
-     EDIT PANEL
-═════════════════════════════════ -->
-<div id="edit-panel">
-  <button class="edit-close-btn" onclick="closeEdit()">✕</button>
-  <div class="edit-inner">
-    <h2>Edit Profile</h2>
-    <p>All changes are saved in your browser automatically.</p>
-
-    <!-- Identity -->
-    <div class="edit-section-title">Identity</div>
-
-    <div class="edit-group">
-      <label>Full Name</label>
-      <input type="text" id="e-name" placeholder="e.g. Mansour Khalifa">
     </div>
-    <div class="edit-group">
-      <label>Title / Role</label>
-      <input type="text" id="e-title" placeholder="e.g. Graphic Designer">
+    <!-- Identity Information -->
+    <h1 class="font-headline font-bold text-3xl tracking-tight text-on-surface mb-1">Mansour Khalifa</h1>
+    <p class="font-body text-secondary font-medium text-lg mb-4">Graphic Designer</p>
+    <p class="font-body text-on-surface-variant text-sm leading-relaxed mb-8 max-w-xs mx-auto">
+                    Specializing in editorial design and bespoke digital identities for premium global brands.
+                </p>
+    <!-- Quick Contact Actions -->
+            <div class="flex justify-center gap-6 mb-10">
+        <div class="flex flex-col items-center gap-2">
+        <a href="tel:+201000000000" class="w-14 h-14 rounded-full bg-surface-container-lowest shadow-[0_10px_30px_rgba(0,0,0,0.06)] flex items-center justify-center hover:scale-105 transition-transform duration-300">
+            <span class="material-symbols-outlined text-primary" data-icon="call">call</span>
+        </a>
+        <span class="text-[11px] font-semibold uppercase tracking-tighter text-zinc-500">Call</span>
+        </div>
+    
+        <div class="flex flex-col items-center gap-2">
+        <a href="sms:+201000000000" class="w-14 h-14 rounded-full bg-surface-container-lowest shadow-[0_10px_30px_rgba(0,0,0,0.06)] flex items-center justify-center hover:scale-105 transition-transform duration-300">
+            <span class="material-symbols-outlined text-primary" data-icon="chat">chat</span>
+        </a>
+        <span class="text-[11px] font-semibold uppercase tracking-tighter text-zinc-500">Message</span>
+        </div>
+        
+        <div class="flex flex-col items-center gap-2">
+        <a href="https://www.yourwebsite.com" target="_blank" class="w-14 h-14 rounded-full bg-surface-container-lowest shadow-[0_10px_30px_rgba(0,0,0,0.06)] flex items-center justify-center hover:scale-105 transition-transform duration-300">
+            <span class="material-symbols-outlined text-primary" data-icon="language">language</span>
+        </a>
+        <span class="text-[11px] font-semibold uppercase tracking-tighter text-zinc-500">Website</span>
+        </div>
     </div>
-    <div class="edit-group">
-      <label>Company</label>
-      <input type="text" id="e-company" placeholder="e.g. Mega Agency">
+    <!-- Primary Action -->
+    <button class="w-full bg-primary text-on-primary py-5 rounded-full font-bold text-lg shadow-[0_10px_30px_rgba(0,0,0,0.1)] active:scale-95 transition-transform mb-12" onclick="handleSaveContact()">
+                    Save Contact
+                </button>
+    <!-- Social Media Grid -->
+    <div class="bg-surface-container-low rounded-lg p-8">
+    <h3 class="font-headline font-bold text-sm uppercase tracking-widest text-zinc-400 mb-8">Connect With Me</h3>
+    <div class="grid grid-cols-3 gap-y-10">
+    <a href="https://wa.me/201234567890" target="_blank" class="flex flex-col items-center gap-3">
+    <div class="w-12 h-12 bg-surface-container-lowest rounded-full flex items-center justify-center shadow-sm">
+        <span class="material-symbols-outlined brand-whatsapp !text-2xl" style="font-variation-settings: 'FILL' 1;">chat</span>
     </div>
-    <div class="edit-group">
-      <label>Bio / Tagline</label>
-      <textarea id="e-bio" rows="3" placeholder="A short description about yourself..."></textarea>
+    <span class="font-label text-[11px] font-semibold text-on-surface">WhatsApp</span>
+    </a>
+    <div class="flex flex-col items-center gap-3">
+    <div class="w-12 h-12 bg-surface-container-lowest rounded-full flex items-center justify-center shadow-sm"><span class="material-symbols-outlined brand-facebook !text-2xl" style="font-variation-settings: 'FILL' 1;">facebook</span></div>
+    <span class="font-label text-[11px] font-semibold text-on-surface">Facebook</span>
     </div>
-
-    <!-- Contact -->
-    <div class="edit-section-title">Contact Info</div>
-    <div class="edit-group">
-      <label>Phone Number</label>
-      <input type="tel" id="e-phone" placeholder="+20 100 000 0000">
+    <div class="flex flex-col items-center gap-3">
+    <div class="w-12 h-12 bg-surface-container-lowest rounded-full flex items-center justify-center shadow-sm"><span class="material-symbols-outlined brand-tiktok !text-2xl" style="font-variation-settings: 'FILL' 1;">movie_filter</span></div>
+    <span class="font-label text-[11px] font-semibold text-on-surface">TikTok</span>
     </div>
-    <div class="edit-group">
-      <label>Email</label>
-      <input type="email" id="e-email" placeholder="you@example.com">
+    <div class="flex flex-col items-center gap-3">
+    <div class="w-12 h-12 bg-surface-container-lowest rounded-full flex items-center justify-center shadow-sm"><span class="material-symbols-outlined brand-messenger !text-2xl" style="font-variation-settings: 'FILL' 1;">forum</span></div>
+    <span class="font-label text-[11px] font-semibold text-on-surface">Messenger</span>
     </div>
-    <div class="edit-group">
-      <label>Location</label>
-      <input type="text" id="e-location" placeholder="Cairo, Egypt">
+    <div class="flex flex-col items-center gap-3">
+    <div class="w-12 h-12 bg-surface-container-lowest rounded-full flex items-center justify-center shadow-sm"><span class="material-symbols-outlined brand-gmail !text-2xl" style="font-variation-settings: 'FILL' 1;">mail</span></div>
+    <span class="font-label text-[11px] font-semibold text-on-surface">Gmail</span>
     </div>
-    <div class="edit-group">
-      <label>Website</label>
-      <input type="url" id="e-website" placeholder="https://yourwebsite.com">
+    <div class="flex flex-col items-center gap-3">
+    <div class="w-12 h-12 bg-surface-container-lowest rounded-full flex items-center justify-center shadow-sm"><span class="material-symbols-outlined brand-instapay !text-2xl" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span></div>
+    <span class="font-label text-[11px] font-semibold text-on-surface">Instapay</span>
     </div>
-
-    <!-- Images -->
-    <div class="edit-section-title">Images</div>
-    <div class="edit-group">
-      <label>Profile Photo URL</label>
-      <input type="url" id="e-avatar" placeholder="https://... or leave blank for icon">
     </div>
-    <div class="edit-group">
-      <label>Cover Image URL</label>
-      <input type="url" id="e-cover" placeholder="https://...">
     </div>
-
-    <!-- Colors -->
-    <div class="edit-section-title">Colors & Theme</div>
-    <div class="edit-group">
-      <label>Accent Color</label>
-      <div class="color-row">
-        <input type="color" id="e-color-picker" value="#C9A96E">
-        <input type="text" id="e-color-hex" placeholder="#C9A96E">
-      </div>
     </div>
-    <div class="edit-group">
-      <label>Theme</label>
-      <select id="e-theme">
-        <option value="dark">Dark (default)</option>
-        <option value="light">Light</option>
-        <option value="midnight">Midnight Blue</option>
-        <option value="forest">Forest Green</option>
-        <option value="rose">Rose</option>
-      </select>
+    </main>
+    <!-- Bottom Navigation Bar -->
+    <footer class="fixed bottom-0 left-0 w-full flex justify-around items-center px-8 pb-8 pt-4 bg-white/80 backdrop-blur-2xl rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.04)] z-50">
+    <div class="flex flex-col items-center justify-center bg-black text-white rounded-full px-5 py-2 scale-105 transition-transform">
+    <span class="material-symbols-outlined text-xl" data-icon="account_circle" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+    <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-tighter">Profile</span>
     </div>
-
-    <!-- Profile URL -->
-    <div class="edit-section-title">Profile URL</div>
-    <div class="edit-group">
-      <label>Page URL (shown when sharing)</label>
-      <input type="url" id="e-profile-url" placeholder="https://yourname.com or leave blank to use current">
+    <div class="flex flex-col items-center justify-center text-zinc-400 px-5 py-2 hover:text-black transition-colors cursor-pointer" onclick="toggleQRModal(true)">
+    <span class="material-symbols-outlined text-xl" data-icon="qr_code_2">qr_code_2</span>
+    <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-tighter">QR Code</span>
     </div>
+    <div class="flex flex-col items-center justify-center text-zinc-400 px-5 py-2 hover:text-black transition-colors cursor-pointer" onclick="handleShare()">
+    <span class="material-symbols-outlined text-xl" data-icon="ios_share">ios_share</span>
+    <span class="font-['Inter'] text-[11px] font-semibold uppercase tracking-tighter">Share</span>
+    </div>
+    </footer>
+    <!-- QR Modal -->
+    <div class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-6" id="qr-modal" onclick="toggleQRModal(false)">
+    <div class="bg-white rounded-[2rem] p-8 max-w-xs w-full text-center shadow-2xl" onclick="event.stopPropagation()">
+    <h3 class="font-headline font-bold text-xl mb-6">My QR Code</h3>
+    <div class="bg-zinc-100 p-4 rounded-xl mb-6">
+    <img alt="QR Code" class="w-full aspect-square" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsQPyVlJne_AKce74JYEHeDCfUy2HfcYdu0MyRDabGZhnFFxFVT20iMdNTQoEEUYQ081gnUXBhZYpS9pBvDvtc2ea9FzYVjbyUC0nO5yxP7FH_jBQbb5Rwa_lMw95va4xTLmRQ5b69awKIt5cCGDoKuuHFlfKbJuqc4sSDYAWp74nwVzYUvab3_oepyUIgn7Xo0uXrOtI5-rJuppeJryL8YJrnDkQ5d8iMLuSpj5dHI62SkOR2nv7JaeEZH1ZqDO0SVQ-q0KvAes0"/>
+    </div>
+    <button class="w-full py-3 bg-zinc-900 text-white rounded-full font-bold" onclick="toggleQRModal(false)">Close</button>
+    </div>
+    </div>
+    <script>
+    function handleSaveContact() {
+        const contact = {
+            name: 'Mansour Khalifa',
+            phone: '+1234567890',
+            email: 'hello@mansour.com'
+        };
+        alert('Contact Saved: ' + contact.name + '\\n' + contact.phone);
+    }
 
-    <!-- Social Links -->
-    <div class="edit-section-title">Social & Links</div>
-    <div id="links-editor"></div>
-    <button class="add-link-btn" onclick="addLinkRow()">+ Add Link</button>
+    function toggleQRModal(show) {
+        const modal = document.getElementById('qr-modal');
+        if (show) modal.classList.remove('hidden');
+        else modal.classList.add('hidden');
+    }
 
-    <button class="edit-save-btn" onclick="saveProfile()">Save Changes</button>
-  </div>
-</div>
-
-
-<!-- ════════════════════════════════
-     SCRIPT
-═════════════════════════════════ -->
-<script>
-// ── Default profile data ──
-const DEFAULT = {
-  name: "Your Name",
-  title: "Your Title",
-  company: "Your Company",
-  bio: "A short bio or tagline about yourself goes here.",
-  phone: "",
-  email: "",
-  location: "",
-  website: "",
-  avatar: "",
-  cover: "",
-  accent: "#C9A96E",
-  theme: "dark",
-  profileUrl: "",
-  links: [
-    { type: "WhatsApp",  url: "https://wa.me/YOUR_NUMBER", emoji: "💬" },
-    { type: "Instagram", url: "https://instagram.com/",    emoji: "📸" },
-    { type: "LinkedIn",  url: "https://linkedin.com/in/",  emoji: "💼" },
-    { type: "Facebook",  url: "https://facebook.com/",     emoji: "📘" },
-    { type: "TikTok",    url: "https://tiktok.com/@",      emoji: "🎵" },
-    { type: "Email",     url: "mailto:you@example.com",    emoji: "✉️" },
-  ]
-};
-
-const THEMES = {
-  dark:     { "--bg":"#0E0E0E", "--card":"#161616", "--surface":"#1E1E1E", "--text":"#F0EDE8", "--muted":"#8A8680", "--border":"#2A2A2A" },
-  light:    { "--bg":"#F5F3EF", "--card":"#FFFFFF", "--surface":"#F0EDE8", "--text":"#1A1815", "--muted":"#8A8580", "--border":"#E0DDD8" },
-  midnight: { "--bg":"#090C14", "--card":"#0F1420", "--surface":"#1A2030", "--text":"#E8EBF5", "--muted":"#6B7590", "--border":"#1E2538" },
-  forest:   { "--bg":"#0A0F0B", "--card":"#111810", "--surface":"#182018", "--text":"#E8F0E5", "--muted":"#708560", "--border":"#1E2A1E" },
-  rose:     { "--bg":"#110A0C", "--card":"#1A1012", "--surface":"#221518", "--text":"#F5EAE8", "--muted":"#956070", "--border":"#2A181C" },
-};
-
-const LINK_TYPES = {
-  "WhatsApp":  { emoji:"💬", prefix:"https://wa.me/" },
-  "Instagram": { emoji:"📸", prefix:"https://instagram.com/" },
-  "Facebook":  { emoji:"📘", prefix:"https://facebook.com/" },
-  "TikTok":    { emoji:"🎵", prefix:"https://tiktok.com/@" },
-  "Twitter/X": { emoji:"🐦", prefix:"https://twitter.com/" },
-  "LinkedIn":  { emoji:"💼", prefix:"https://linkedin.com/in/" },
-  "YouTube":   { emoji:"▶️", prefix:"https://youtube.com/" },
-  "Telegram":  { emoji:"✈️", prefix:"https://t.me/" },
-  "Snapchat":  { emoji:"👻", prefix:"https://snapchat.com/add/" },
-  "Email":     { emoji:"✉️", prefix:"mailto:" },
-  "Phone":     { emoji:"📞", prefix:"tel:" },
-  "Website":   { emoji:"🌐", prefix:"https://" },
-  "GitHub":    { emoji:"🐙", prefix:"https://github.com/" },
-  "Behance":   { emoji:"🎨", prefix:"https://behance.net/" },
-  "Dribbble":  { emoji:"🏀", prefix:"https://dribbble.com/" },
-  "Pinterest": { emoji:"📌", prefix:"https://pinterest.com/" },
-  "Custom":    { emoji:"🔗", prefix:"" },
-};
-
-let profile = {};
-
-function load() {
-  const saved = localStorage.getItem("personal_id_v2");
-  profile = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULT));
-  render();
-}
-
-function render() {
-  // Apply theme
-  const t = THEMES[profile.theme] || THEMES.dark;
-  for (const [k,v] of Object.entries(t)) document.documentElement.style.setProperty(k, v);
-  document.documentElement.style.setProperty("--accent", profile.accent || "#C9A96E");
-  // dark accent variant
-  const hex = profile.accent || "#C9A96E";
-  document.documentElement.style.setProperty("--accent-dark", darken(hex, 20));
-
-  // page title
-  document.title = `${profile.name || "Profile"} | ${profile.title || ""}`;
-  document.getElementById("page-title").textContent = document.title;
-
-  // identity
-  document.getElementById("disp-name").textContent    = profile.name    || "Your Name";
-  document.getElementById("disp-title").textContent   = profile.title   || "Your Title";
-  document.getElementById("disp-company").textContent = profile.company || "";
-  document.getElementById("disp-bio").textContent     = profile.bio     || "";
-
-  // avatar
-  const av = document.getElementById("avatar-img");
-  av.src = profile.avatar || "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect width='96' height='96' fill='%231E1E1E'/><text x='48' y='58' text-anchor='middle' font-size='44' fill='%23C9A96E'>✦</text></svg>";
-
-  // cover
-  const cimg = document.getElementById("cover-img");
-  if (profile.cover) { cimg.src = profile.cover; cimg.style.display = "block"; }
-  else { cimg.style.display = "none"; }
-
-  // contact strip
-  const strip = document.getElementById("contact-strip");
-  strip.innerHTML = "";
-  const contacts = [
-    { icon: phoneIcon(), label: "Phone", value: profile.phone, href: "tel:"+profile.phone },
-    { icon: emailIcon(), label: "Email", value: profile.email, href: "mailto:"+profile.email },
-    { icon: pinIcon(),   label: "Location", value: profile.location, href: null },
-    { icon: webIcon(),   label: "Website", value: profile.website, href: profile.website },
-  ].filter(c => c.value);
-  contacts.forEach(c => {
-    const a = document.createElement(c.href ? "a" : "div");
-    if (c.href) { a.href = c.href; }
-    a.className = "contact-row";
-    a.innerHTML = `<div class="icon">${c.icon}</div><div><span class="label">${c.label}</span><span class="value">${c.value}</span></div>`;
-    strip.appendChild(a);
-  });
-
-  // links grid
-  const grid = document.getElementById("links-grid");
-  grid.innerHTML = "";
-  (profile.links || []).forEach((lk, i) => {
-    const info = LINK_TYPES[lk.type] || LINK_TYPES["Custom"];
-    const a = document.createElement("a");
-    a.href = lk.url || "#";
-    a.target = "_blank";
-    a.rel = "noopener noreferrer";
-    a.className = "link-item";
-    a.style.animationDelay = (i * 0.06) + "s";
-    a.innerHTML = `<div class="link-icon">${lk.emoji || info.emoji}</div><span>${lk.type}</span>`;
-    grid.appendChild(a);
-  });
-
-  // exchange sub
-  document.getElementById("exchange-sub").textContent =
-    `Share your info with ${profile.name || "the profile owner"}`;
-
-  // share links
-  const url = encodeURIComponent(profile.profileUrl || location.href);
-  const txt = encodeURIComponent(`Check out ${profile.name}'s profile!`);
-  document.getElementById("sh-whatsapp").href = `https://wa.me/?text=${txt}%20${url}`;
-  document.getElementById("sh-facebook").href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
-  document.getElementById("sh-twitter").href  = `https://twitter.com/intent/tweet?text=${txt}&url=${url}`;
-  document.getElementById("sh-linkedin").href = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
-  document.getElementById("sh-email").href    = `mailto:?subject=${encodeURIComponent(profile.name + "'s Profile")}&body=${txt}%20${url}`;
-  document.getElementById("profile-url").value = profile.profileUrl || location.href;
-}
-
-// ── Edit panel ──
-function openEdit() {
-  const p = profile;
-  document.getElementById("e-name").value       = p.name     || "";
-  document.getElementById("e-title").value      = p.title    || "";
-  document.getElementById("e-company").value    = p.company  || "";
-  document.getElementById("e-bio").value        = p.bio      || "";
-  document.getElementById("e-phone").value      = p.phone    || "";
-  document.getElementById("e-email").value      = p.email    || "";
-  document.getElementById("e-location").value   = p.location || "";
-  document.getElementById("e-website").value    = p.website  || "";
-  document.getElementById("e-avatar").value     = p.avatar   || "";
-  document.getElementById("e-cover").value      = p.cover    || "";
-  document.getElementById("e-profile-url").value= p.profileUrl||"";
-  document.getElementById("e-color-picker").value = p.accent || "#C9A96E";
-  document.getElementById("e-color-hex").value    = p.accent || "#C9A96E";
-  document.getElementById("e-theme").value       = p.theme   || "dark";
-
-  // sync color inputs
-  document.getElementById("e-color-picker").addEventListener("input", e => {
-    document.getElementById("e-color-hex").value = e.target.value;
-  });
-  document.getElementById("e-color-hex").addEventListener("input", e => {
-    if (/^#[0-9A-Fa-f]{6}$/.test(e.target.value))
-      document.getElementById("e-color-picker").value = e.target.value;
-  });
-
-  renderLinksEditor();
-  document.getElementById("edit-panel").classList.add("open");
-  document.body.style.overflow = "hidden";
-}
-
-function closeEdit() {
-  document.getElementById("edit-panel").classList.remove("open");
-  document.body.style.overflow = "";
-}
-
-function renderLinksEditor() {
-  const cont = document.getElementById("links-editor");
-  cont.innerHTML = "";
-  (profile.links || []).forEach((lk, i) => {
-    const row = document.createElement("div");
-    row.className = "link-editor-row";
-    row.dataset.i = i;
-
-    const sel = document.createElement("select");
-    sel.className = "edit-group input"; // reuse styling
-    sel.style.cssText = "width:130px;flex-shrink:0;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 8px;color:var(--text);font-family:var(--font-body);font-size:.82rem;outline:none;margin:0;";
-    Object.keys(LINK_TYPES).forEach(lt => {
-      const o = document.createElement("option");
-      o.value = lt; o.textContent = LINK_TYPES[lt].emoji + " " + lt;
-      if (lt === lk.type) o.selected = true;
-      sel.appendChild(o);
-    });
-
-    const inp = document.createElement("input");
-    inp.type = "url"; inp.value = lk.url || ""; inp.placeholder = "URL";
-    inp.style.cssText = "flex:1;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 12px;color:var(--text);font-family:var(--font-body);font-size:.82rem;outline:none;margin:0;";
-
-    const del = document.createElement("button");
-    del.className = "del-link-btn"; del.textContent = "✕";
-    del.onclick = () => { profile.links.splice(i, 1); renderLinksEditor(); };
-
-    row.appendChild(sel); row.appendChild(inp); row.appendChild(del);
-    cont.appendChild(row);
-  });
-}
-
-function addLinkRow() {
-  profile.links = profile.links || [];
-  profile.links.push({ type: "Custom", url: "", emoji: "🔗" });
-  renderLinksEditor();
-}
-
-function saveProfile() {
-  const p = profile;
-  p.name        = document.getElementById("e-name").value.trim();
-  p.title       = document.getElementById("e-title").value.trim();
-  p.company     = document.getElementById("e-company").value.trim();
-  p.bio         = document.getElementById("e-bio").value.trim();
-  p.phone       = document.getElementById("e-phone").value.trim();
-  p.email       = document.getElementById("e-email").value.trim();
-  p.location    = document.getElementById("e-location").value.trim();
-  p.website     = document.getElementById("e-website").value.trim();
-  p.avatar      = document.getElementById("e-avatar").value.trim();
-  p.cover       = document.getElementById("e-cover").value.trim();
-  p.profileUrl  = document.getElementById("e-profile-url").value.trim();
-  p.accent      = document.getElementById("e-color-hex").value.trim() || document.getElementById("e-color-picker").value;
-  p.theme       = document.getElementById("e-theme").value;
-
-  // read links from editor rows
-  const rows = document.querySelectorAll("#links-editor .link-editor-row");
-  p.links = [];
-  rows.forEach(row => {
-    const type = row.querySelector("select").value;
-    const url  = row.querySelector("input").value.trim();
-    if (url) p.links.push({ type, url, emoji: LINK_TYPES[type]?.emoji || "🔗" });
-  });
-
-  localStorage.setItem("personal_id_v2", JSON.stringify(p));
-  render();
-  closeEdit();
-  toast("✓ Profile saved!");
-}
-
-// ── Modals ──
-function openExchange() { document.getElementById("exchange-modal").classList.add("open"); }
-function openShare()    { document.getElementById("share-modal").classList.add("open"); }
-function closeModal(id) { document.getElementById(id).classList.remove("open"); }
-
-function sendExchange() {
-  const name  = document.getElementById("ex-name").value.trim();
-  const phone = document.getElementById("ex-phone").value.trim();
-  const email = document.getElementById("ex-email").value.trim();
-  if (!name || !phone || !email) { toast("⚠️ Please fill required fields"); return; }
-  // Build mailto or WhatsApp message to profile owner
-  const msg = `New contact exchange:\nName: ${name}\nPhone: ${phone}\nEmail: ${email}\nCompany: ${document.getElementById("ex-company").value}\nMessage: ${document.getElementById("ex-msg").value}`;
-  if (profile.email) {
-    window.open(`mailto:${profile.email}?subject=Contact Exchange from ${name}&body=${encodeURIComponent(msg)}`);
-  } else if (profile.phone) {
-    window.open(`https://wa.me/${profile.phone.replace(/\D/g,"")}?text=${encodeURIComponent(msg)}`);
-  }
-  closeModal("exchange-modal");
-  toast("✓ Message sent!");
-}
-
-function copyUrl() {
-  const v = document.getElementById("profile-url").value;
-  navigator.clipboard.writeText(v).then(() => toast("✓ URL copied!")).catch(() => {
-    document.getElementById("profile-url").select();
-    document.execCommand("copy");
-    toast("✓ URL copied!");
-  });
-}
-
-function nativeShare() {
-  if (navigator.share) {
-    navigator.share({ title: profile.name, url: profile.profileUrl || location.href });
-  } else { copyUrl(); }
-}
-
-// ── Toast ──
-let toastTimer;
-function toast(msg) {
-  const el = document.getElementById("toast");
-  el.textContent = msg;
-  el.classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove("show"), 2500);
-}
-
-// ── Color helpers ──
-function darken(hex, pct) {
-  let r = parseInt(hex.slice(1,3),16);
-  let g = parseInt(hex.slice(3,5),16);
-  let b = parseInt(hex.slice(5,7),16);
-  r = Math.max(0, r - Math.round(r * pct/100));
-  g = Math.max(0, g - Math.round(g * pct/100));
-  b = Math.max(0, b - Math.round(b * pct/100));
-  return "#" + [r,g,b].map(x => x.toString(16).padStart(2,"0")).join("");
-}
-
-// ── SVG icons ──
-function phoneIcon() { return `<svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.22 1.22 2 2 0 012.18 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.91 7.1a16 16 0 006 6l.56-.56a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 14.92z"/></svg>`; }
-function emailIcon() { return `<svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`; }
-function pinIcon()   { return `<svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`; }
-function webIcon()   { return `<svg viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>`; }
-
-// ── Boot ──
-load();
-</script>
-</body>
-</html>
+    async function handleShare() {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: 'Mansour Khalifa - Graphic Designer',
+                    text: 'Check out Mansour Khalifa\'s professional profile.',
+                    url: window.location.href,
+                });
+            } catch (err) {
+                console.error('Share failed:', err);
+            }
+        } else {
+            alert('Sharing link: ' + window.location.href);
+        }
+    }
+    </script></body></html>
